@@ -1,0 +1,229 @@
+type: custom:button-card
+icon: mdi:washing-machine
+name: |
+  [[[
+    const machineState = states['select.beko_state'].state;
+    return (machineState === 'unavailable' || machineState === 'device_state_off') 
+      ? 'The Washing Machine is OFF' 
+      : 'Beko Washer Dryer';
+  ]]]
+entities:
+  - entity: sensor.beko_remaining
+  - entity: sensor.beko_programme
+  - entity: sensor.beko_duration
+  - entity: sensor.beko_sub_state
+  - entity: select.beko_state
+styles:
+  card:
+    - padding: 20px
+    - height: 200px
+    - background: linear-gradient(90deg, rgba(24,40,72,1) 0%, rgba(75,108,183,1) 100%);
+  grid:
+    - grid-template-areas: |
+        [[[
+          const machineState = states['select.beko_state'].state;
+          return (machineState === 'unavailable' || machineState === 'device_state_off') 
+            ? '"i " "n " "l "' 
+            : '"i program" "n stat2" "bar bar" "stat1 stat3"';
+        ]]]
+    - grid-template-columns: 1fr 1fr
+    - grid-template-rows: |
+        [[[
+          const machineState = states['select.beko_state'].state;
+          return (machineState === 'unavailable' || machineState === 'device_state_off') 
+            ? '1fr min-content 1fr' 
+            : '70px min-content 30px min-content';
+        ]]]
+  name:
+    - justify-self: start
+    - font-size: 14px
+    - opacity: 0.7
+  icon:
+    - width: 48px
+  img_cell:
+    - justify-self: start
+    - align-self: start
+    - width: 50px
+    - height: 50px
+  custom_fields:
+    program:
+      - text-overflow: ellipsis
+      - word-break: break-word
+      - font-size: 16px
+      - justify-self: end
+      - padding-bottom: 10px
+      - font-weight: 500
+      - margin-bottom: "-10px"
+      - margin-left: "-20px"
+      - max-width: 500px
+      - white-space: normal
+    bar:
+      - justify-self: start
+      - margin-top: "-4px"
+      - width: 100%
+      - border-radius: 5px
+      - background: "#FBFFE4"
+      - height: 12px
+    stat1:
+      - justify-self: start
+      - font-size: 8px
+      - opacity: 0.7
+      - color: yellow
+    stat2:
+      - justify-self: end
+      - font-size: 16px
+      - font-weight: 500
+    stat3:
+      - justify-self: end
+      - font-size: 10px
+      - opacity: 0.7
+      - color: red
+custom_fields:
+  title: >
+    [[[ return `<div style="text-align: center; font-size: 1.2rem; font-weight:
+    bold;">Beko</div>`; ]]]
+  program: |
+    [[[
+      let machineState = states['select.beko_state'].state;
+
+      if (machineState === 'unavailable' || machineState === 'device_state_off') {
+        return '';
+      }
+
+      let programme = states['sensor.beko_programme'].state || 'No Programme';
+      let subState = states['sensor.beko_sub_state'].state || '';
+
+      // Map technical program values to friendly names
+      const programMapping = {
+        'program_cottons': 'Cottons',
+        'program_eco_40_60': 'Eco 40-60',
+        'program_synthetics': 'Synthetics',
+        'program_wool_handwash': 'Wool/Handwash',
+        'program_mini_mini14': 'Mini/Mini14',
+        'program_duvet': 'Duvet',
+        'program_mix': 'Mix',
+        'program_spin_pump': 'Spin/Pump',
+        'program_rinsing': 'Rinsing',
+        'program_shirts': 'Shirts',
+        'program_dryer_cotton': 'Dryer Cotton',
+        'program_dryer_synthetics': 'Dryer Synthetics',
+        'program_hygiene_wash_dry': 'Hygiene Wash & Dry',
+        'program_5kg_wash_dry': '5kg Wash & Dry',
+        'program_wash_wear': 'Wash & Wear',
+        'program_towel': 'Towel',
+        'program_dark_wash': 'Dark Wash',
+        'program_outdoor': 'Outdoor',
+        'program_lingerie': 'Lingerie',
+        'program_drum_clean_plus': 'Drum Clean+'
+      };
+
+      // Map technical sub-state values to friendly names
+      const subStateMapping = {
+        'washer_substate_washing': 'Washing',
+        'washer_substate_spin': 'Spinning',
+        'washer_water_intake': 'Water Intake',
+        'washer_substate_prewash': 'Prewash',
+        'washer_substate_rinsing': 'Rinsing',
+        'washer_substate_softener': 'Softener',
+        'washer_substate_program_started': 'Program Started',
+        'washer_substate_time_delay_enabled': 'Time Delay Enabled',
+        'washer_substate_paused': 'Paused',
+        'washer_substate_analysing': 'Analysing',
+        'washer_substate_door_locked': 'Door Locked',
+        'washer_substate_opening_door': 'Opening Door',
+        'washer_substate_locking_door': 'Locking Door',
+        'washer_substate_remove_laundry': 'Remove Laundry',
+        'washer_substate_add_laundry': 'Add Laundry',
+        'washer_substate_rinse_hold': 'Rinse Hold',
+        'washer_substate_remote_anticrease': 'Remote Anticrease',
+        'washer_substate_drying': 'Drying'
+      };
+
+      // Get the friendly program name, or use the original value if not found in the mapping
+      let friendlyProgram = programMapping[programme] || programme;
+
+      // Get the friendly sub-state name, or use the original value if not found in the mapping
+      let friendlySubState = subStateMapping[subState] || subState;
+
+      return `${friendlyProgram} - ${friendlySubState}`.trim();
+    ]]]
+bar: |
+  [[[
+    let machineState = states['select.beko_state'].state;
+    
+    // If machine is off or unavailable, return a placeholder or empty div
+    if (machineState === 'unavailable' || machineState === 'device_state_off') {
+      return `<div style="height: 12px;"></div>`;
+    }
+      let remaining = states['sensor.beko_remaining'].state;
+      let duration = states['sensor.beko_duration'].state;
+      
+      // Validate input
+      if (!remaining || !duration || 
+          remaining === 'unknown' || remaining === 'unavailable' || 
+          duration === 'unknown' || duration === 'unavailable') {
+        return `<div style="background-color: #f0f0f0; height: 12px;border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #888;">N/A</div>`;
+      }
+      
+      try {
+        let remainingMinutes = parseFloat(remaining);
+        let durationMinutes = parseFloat(duration);
+        
+        if (isNaN(remainingMinutes) || isNaN(durationMinutes) || durationMinutes === 0) {
+          return `<div style="background-color: #f0f0f0; height: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #888;">Invalid Data</div>`;
+        }
+        
+        let percentage = Math.max(0, Math.min(100, (1 - (remainingMinutes / durationMinutes)) * 100));
+        
+        return `
+          <div style="width: 100%; background-color: #FBFFE4; height: 12px; border-radius: 10px; overflow: hidden;">
+            <div style="width: ${percentage}%; height: 12px; background-color: #E07A5F; border-radius: 10px;"></div>
+          </div>
+        `;
+      } catch (error) {
+        return `<div style="background-color: #f0f0f0; height: 12px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #888;">Error</div>`;
+      }
+    ]]]
+  stat1: |
+    [[[
+      let machineState = states['select.beko_state'].state;
+      
+      // If machine is off or unavailable, return empty string
+      if (machineState === 'unavailable' || machineState === 'device_state_off') {
+        return '';
+      }
+      
+      return '';  // Changed from 0 to an empty string
+    ]]]
+  stat2: |
+    [[[
+      let machineState = states['select.beko_state'].state;
+      
+      // If machine is off or unavailable, return empty string
+      if (machineState === 'unavailable' || machineState === 'device_state_off') {
+        return '';
+      }
+      
+      let duration = states['sensor.beko_duration'].state || 'N/A';
+      return `${duration}`;
+    ]]]
+  stat3: |
+    [[[
+      let machineState = states['select.beko_state'].state;
+      
+      // If machine is off or unavailable, return empty string
+      if (machineState === 'unavailable' || machineState === 'device_state_off') {
+        return '';
+      }
+      
+      let remaining = states['sensor.beko_remaining'].state || 'N/A';
+      return `${remaining}`;
+    ]]]
+variables:
+  - timeStringToSeconds: |
+      [[[
+        function timeStringToSeconds(minutes) {
+          return parseFloat(minutes) * 60;
+        }
+        return timeStringToSeconds;
+      ]]]
