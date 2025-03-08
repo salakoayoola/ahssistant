@@ -7,4 +7,4 @@ Little pockets of success stories from my Home Server experiment
 ![Beko HA card - running](https://github.com/salakoayoola/ahssistant/blob/main/images/Cottons%20Rinsing.png?raw=true)
 Inspired by [My Smart Home's](https://youtu.be/_aoO5CdymaE?si=VxxMwIuEEPEtWo3Y) Washing Machine card, I tried to recreate the card, specifically for the Beko 742xxxy series
 
-[Continue here](https://github.com/salakoayoola/ahssistant/blob/main/Closet/Washing%20Machine/washing-machine.md)
+[Continue here](https://github.com/salakoayoola/ahssistant/blob/main/Closet/Washing%20Machine/README.md)
