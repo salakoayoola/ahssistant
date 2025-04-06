@@ -1,0 +1,108 @@
+services:
+  docmost:
+    image: docmost/docmost:latest
+    depends_on:
+      - db-docmost
+      - redis
+    environment:
+      APP_URL: ${APP_URL}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      PORT: ${PORT}
+      JWT_TOKEN_EXPIRES_IN: ${JWT_TOKEN_EXPIRES_IN}
+      MAIL_DRIVER: ${MAIL_DRIVER}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_SECURE: ${SMTP_SECURE}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME}
+    ports:
+      - "9093:9093"
+    restart: unless-stopped
+    volumes:
+      - ${CONFIG_FOLDER}/docmost/docmost:/app/data/storage
+    # secrets:
+    #   - app_secret
+    #   - database_url
+    #   - redis_url
+    #   - smtp_username
+    #   - smtp_password
+
+  db-docmost:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ${CONFIG_FOLDER}/docmost/db_data:/var/lib/postgresql/data
+    # secrets:
+    #   - postgres_password
+
+  redis:
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    volumes:
+      - ${CONFIG_FOLDER}/docmost/redis_data:/data
+
+  db-nextcloud:
+    image: mariadb:10.6
+    container_name: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - ${CONFIG_FOLDER}/next-cloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD_FILE=${MYSQL_PASSWORD_FILE}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+    networks:
+      - nextcloud_net
+    # secrets:
+    #   - mysql_root_password
+    #   - mysql_password
+
+  # app:
+  #   image: nextcloud
+  #   container_name: nextcloud
+  #   restart: always
+  #   ports:
+  #     - 8085:8085
+  #   volumes:
+  #     - ${CONFIG_FOLDER}/next-cloud/html:/var/www/html
+  #   environment:
+  #     - MYSQL_PASSWORD_FILE=${MYSQL_PASSWORD_FILE}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #     - MYSQL_HOST=${MYSQL_HOST}
+  #   networks:
+  #     - nextcloud_net
+  #   # secrets:
+  #   #   - mysql_password
+
+# secrets:
+#   app_secret:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/app_secret
+#   database_url:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/database_url
+#   redis_url:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/redis_url
+#   smtp_username:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/smtp_username
+#   smtp_password:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/smtp_password
+#   postgres_password:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/postgres_password
+#   mysql_root_password:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/mysql_root_password
+#   mysql_password:
+#     file: ${CONFIG_FOLDER}/1-abc/doc-ops/doc-ops_secret/mysql_password
+
+networks:
+  nextcloud_net:
+    driver: bridge

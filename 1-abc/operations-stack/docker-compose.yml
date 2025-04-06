@@ -1,0 +1,141 @@
+services:
+  flaresolverr:
+    # DockerHub mirror flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    #network_mode: "container:gluetun"
+    ports:
+      - 8191:8191 #FlareSolver
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_HTML: ${LOG_HTML:-false}
+      CAPTCHA_SOLVER: ${CAPTCHA_SOLVER:-none}
+      TZ: ${TZ}
+    restart: unless-stopped
+  
+#QBittorrent Container
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "container:gluetun"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      WEBUI_PORT: 8081
+    volumes:
+      - ${CONFIG}/qbittorrent:/config
+      - ${CONFIG}/downloads:/downloads #optional
+    restart: unless-stopped
+
+#Homepage
+#Local instance
+  homepage_local:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage_local
+    environment:
+      PUID: ${PUID} # optional, your user id
+      PGID: ${PGID} # optional, your group id
+      HOMEPAGE_ALLOWED_HOSTS: 192.168.1.200:3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ${CONFIG}/homepage/config:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+    restart: unless-stopped
+
+#External Hompage #Homer
+  homer:
+    image: b4bz/homer:latest
+    #To build from source, comment previous line and uncomment below
+    #build: .
+    container_name: homer
+    volumes:
+      - ${CONFIG}/homer-ext/assets:/www/assets
+    ports:
+      - 9090:8080
+    environment:
+      PUID: ${PUID} # optional, your user id
+      PGID: ${PGID} # optional, your group id
+    restart: unless-stopped
+
+#Watchtower - update Docker Containers automatically
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 86400
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    restart: unless-stopped
+
+#Gluetun - VPN Container
+  gluetun:
+      image: qmcgaw/gluetun:latest
+      container_name: gluetun
+      cap_add:
+        - NET_ADMIN
+      devices:
+        - /dev/net/tun:/dev/net/tun
+      restart: unless-stopped
+      ports:
+        - 6881:6881
+        - 6881:6881/udp
+        - 8081:8081 #QBittorrent
+      volumes:
+        - ${CONFIG}/gluetun:/gluetun
+      environment:
+        #- HTTPPROXY=on #Remove if not using for HTTP proxy
+        #- SHADOWSOCKS=on #Remove if not using for Shadowsocks Proxy
+        - TZ=Africa/Lagos
+        - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+        - VPN_TYPE=${VPN_TYPE}
+        - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+        - WIREGUARD_PRESHARED_KEY=${WIREGUARD_PRESHARED_KEY}
+        - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+
+#NGINX
+  # nginxproxymanager:
+  #   image: 'docker.io/jc21/nginx-proxy-manager:latest' 
+  #   container_name: nginxproxymanager
+  #   restart: unless-stopped 
+  #   #network_mode: host
+  #   ports:
+  #     - '80:80'
+  #     - '81:81'
+  #     - '443:443' 
+  #   volumes:
+  #     - ${CONFIG}/nginx/data:/data
+  #     - ${CONFIG}/nginx/letsencrypt:/etc/letsencrypt
+    
+
+#DDNS - Automatically update public IP Address
+  # ddns:
+  #   image: favonia/cloudflare-ddns:latest
+  #   container_name: cloudflare-ddns
+  #   # network_mode: host # This bypasses network isolation and makes IPv6 easier (optional; see below)
+  #   restart: always
+  #   user: "1000:1000" # Run the updater with specific user and group IDs (in that order).
+  #   read_only: true # Make the container filesystem read-only (optional but recommended)
+  #   cap_drop: [all] # Drop all Linux capabilities (optional but recommended)
+  #   security_opt: [no-new-privileges:true] # Another protection to restrict superuser privileges (optional but recommended)
+  #   environment:
+  #     - CLOUDFLARE_API_TOKEN=L3nLkOHMqrraTRJV7GbU47n_psdfg2L3vs93sgbL
+  #     - DOMAINS=gigaplex.site
+  #     - PROXIED=true
+  #     - IP6_PROVIDER=none
+
+
+#File Browser
+#  filebrowser:
+#    image: hurlenko/filebrowser
+#    user: "1000:1000"
+#    ports:
+#      - 443:8085
+#    volumes:
+#      - /srv/dev-disk-by-uuid-e902b840-5280-4b1d-a0be-27da08be904a:/data
+#      - ${CONFIG}/filebrowser/config:/config
+#    environment:
+#      - FB_BASEURL=/filebrowser
+#    restart: always

@@ -1,0 +1,62 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    #network_mode: "container:gluetun"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 9696:9696 #Prowlarr
+    volumes:
+      - ${CONFIG}/prowlarr:/config #Prowlarr Config
+    restart: unless-stopped
+
+#Radarr
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    #network_mode: "container:gluetun"
+    ports:
+      - 7878:7878 #Radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG}/radarr:/config #Radarr Config
+      - ${CONFIG}/gigaplex-movies:/movies #Movies
+      - ${CONFIG}/downloads:/downloads #Downloads
+    restart: unless-stopped
+#Sonarr
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    #network_mode: "container:gluetun"
+    ports:
+      - 8989:8989 #Sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG}/sonarr:/config #Sonarr Config
+      - ${CONFIG}/gigaplex-tv:/tv #TV Shows Folder
+      - ${CONFIG}/downloads:/downloads #Downloads
+    restart: unless-stopped
+#Bazarr
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG}/bazarr:/config #Bazarr Config
+      - ${CONFIG}/gigaplex-movies:/movies #Movies Folder
+      - ${CONFIG}/gigaplex-tv:/tv #TV Shows Folder
+    ports:
+      - 6767:6767
+    restart: unless-stopped

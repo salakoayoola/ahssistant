@@ -1,0 +1,46 @@
+services:
+  influxdb:
+    image: influxdb:2
+    container_name: influxdb
+    restart: always
+    ports:
+      - '8086:8086'
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ayoola
+      DOCKER_INFLUXDB_INIT_PASSWORD: B@6hiYNuy8H^Ut
+      DOCKER_INFLUXDB_INIT_ORG: gigaplex
+      DOCKER_INFLUXDB_INIT_BUCKET: gigaplex-base
+    volumes:
+      - /srv/dev-disk-by-uuid-e902b840-5280-4b1d-a0be-27da08be904a/gigaplex/gigaplex-data/influxdb/data:/var/lib/influxdb2:rw
+      - /srv/dev-disk-by-uuid-e902b840-5280-4b1d-a0be-27da08be904a/gigaplex/gigaplex-data/influxdb/config:/etc/influxdb2:rw
+#Grafana
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3010:3010'
+    volumes:
+      - /srv/dev-disk-by-uuid-e902b840-5280-4b1d-a0be-27da08be904a/gigaplex/gigaplex-data/grafana:/var/lib/grafana
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true" #Optional, for anonymous access. Remove or set to false for authentication
+      GF_SERVER_HTTP_PORT: 3010 #Reroute the internal port
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer #Optional, sets viewer role for anonymous users.
+      GF_DATASOURCES_DEFAULT_INFLUXDB_URL: http://192.168.1.200:8086 #Replace with your InfluxDB host.
+      GF_DATASOURCES_DEFAULT_INFLUXDB_ORG: gigaplex #Replace with your InfluxDB org.
+      GF_DATASOURCES_DEFAULT_INFLUXDB_TOKEN: kUxPg-eAn-JpscL2z67AqCLzJ1XJSpX4JvKHKFO5doVtbJyDINwaFQgZ479MzufpXhTBhB1OUuwXMlFr__HwJw== #Replace with your InfluxDB token.
+      GF_DATASOURCES_DEFAULT_INFLUXDB_DEFAULTBUCKET: ahssistant #Replace with your InfluxDB bucket.
+    depends_on:
+      - influxdb #Add the influxDB container or service name if needed.
+#Node RED
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    ports:
+      - 1880:1880
+    volumes:
+      - /srv/dev-disk-by-uuid-e902b840-5280-4b1d-a0be-27da08be904a/gigaplex/gigaplex-data/nodered:/data
+    environment:
+      - TZ=Europe/London
+    restart: unless-stopped
