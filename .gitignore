@@ -23,6 +23,5 @@ mysql/
 nginx/*
 nginx/data/
 nginx/letsencrypt/
-traefik/
 traefik/certs
-gluetun/servers.json
+gluetun/config
