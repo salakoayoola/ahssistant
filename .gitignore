@@ -1,6 +1,7 @@
 # Environment variables
 .env
-
+.db
+.gitignore
 # JSON Files
 .json
 
@@ -15,31 +16,13 @@ node_modules/
 Thumbs.db
 
 # Extra Folders folder
-bazarr/
 cloudflare-ddns/config/
-docmost/
-downloads/
-gigaplex-resources/
-grafana/
-heimdall/
-homepage/
-influxdb/*
-immich-app/postgres/
-kometa/config/logs
-kometa/config/assets
-kometa/config/overlays
+authentik/custom-templates/
+authentik/media/
 mysql/
-nextcloud/db/
-nextcloud/html/
+nginx/*
 nginx/data/
 nginx/letsencrypt/
-nodered/
-plex/
-plextraktsync/
-prowlarr/
-qbittorrent/
-radarr/
-sonarr/
-tautulli/
-tdarr/
 traefik/
+traefik/certs
+gluetun/servers.json
