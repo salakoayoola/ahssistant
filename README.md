@@ -1,10 +1,4 @@
-# ahssistant
-Little pockets of success stories from my Home Server experiment
-
-## Closet / Bathroom Integrations
- #### Beko Washing Machine
-
-![Beko HA card - running](https://github.com/salakoayoola/ahssistant/blob/main/images/Cottons%20Rinsing.png?raw=true)
-Inspired by [My Smart Home's](https://youtu.be/_aoO5CdymaE?si=VxxMwIuEEPEtWo3Y) Washing Machine card, I tried to recreate the card, specifically for the Beko 742xxxy series
-
-[Continue here](https://github.com/salakoayoola/ahssistant/blob/main/Closet/Washing%20Machine/README.md)
+## INFRARR
+### Bind9 
+For Local Domain Name resolution - nameservers
+Based on Christian Lempa's tutorial https://youtu.be/syzwLwE3Xq4?si=NBE4-UiBnJsOe-C1
