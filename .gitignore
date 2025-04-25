@@ -25,3 +25,7 @@ nginx/data/
 nginx/letsencrypt/
 traefik/certs
 gluetun/config
+
+bind9/cache
+bind9/config
+bind9/records
