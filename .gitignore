@@ -15,10 +15,8 @@ node_modules/
 Thumbs.db
 
 # Extra Folders folder
-bazarr/
 cloudflare-ddns/config/
 docmost/
-downloads/
 gigaplex-resources/
 grafana/
 heimdall/
@@ -34,12 +32,8 @@ nextcloud/html/
 nginx/data/
 nginx/letsencrypt/
 nodered/
-plex/
-plextraktsync/
-prowlarr/
+
 qbittorrent/
-radarr/
-sonarr/
-tautulli/
+
 tdarr/
 traefik/
