@@ -1,8 +1,8 @@
 $TTL    2d
 
-$ORIGIN localsrv.gigaplex.site.
+$ORIGIN local.gigaplex.site.
 
-@                   IN          SOA         ns.localsrv.gigaplex.site.      iam.salakoayoola.xyz.   (
+@                   IN          SOA         ns.local.gigaplex.site.      iam.salakoayoola.xyz.   (
                                             2025042500      ;   serial
                                             12h             ;   refresh
                                             15m             ;   retry
@@ -10,7 +10,7 @@ $ORIGIN localsrv.gigaplex.site.
                                             2h              ;   minimum ttl
                                             )
 
-                    IN          ns          ns.localsrv.gigaplex.site.
+                    IN          ns          ns.local.gigaplex.site.
 
 ns                  IN          A           192.168.1.50
 
