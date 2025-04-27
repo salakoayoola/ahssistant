@@ -15,7 +15,9 @@ node_modules/
 Thumbs.db
 
 # Extra Folders folder
-
+heyform/assets/*
+heyform/mongodb_data/*
+heyform/redis_data/*
 heimdall/
 immich-app/postgres/
 kometa/config/logs
