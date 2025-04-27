@@ -15,8 +15,7 @@ node_modules/
 Thumbs.db
 
 # Extra Folders folder
-docmost/
-grafana/
+
 heimdall/
 immich-app/postgres/
 kometa/config/logs
