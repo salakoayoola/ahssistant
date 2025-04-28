@@ -32,6 +32,8 @@ nextcloud/html/
 nginx/data/
 nginx/letsencrypt/
 nodered/
+plex/plex/*
+plextraktsync/config/*
 
 qbittorrent/
 
