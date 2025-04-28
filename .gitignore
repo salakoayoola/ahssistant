@@ -15,25 +15,16 @@ node_modules/
 Thumbs.db
 
 # Extra Folders folder
-cloudflare-ddns/config/
-docmost/
-gigaplex-resources/
-grafana/
-heimdall/
-homepage/
-influxdb/*
-immich-app/postgres/
+
 kometa/config/logs
 kometa/config/assets
 kometa/config/overlays
-mysql/
-nextcloud/db/
-nextcloud/html/
-nginx/data/
-nginx/letsencrypt/
-nodered/
-plex/plex/*
+
+
+plex/config/*
 plextraktsync/config/*
+
+tautulli/config/*
 
 qbittorrent/
 
