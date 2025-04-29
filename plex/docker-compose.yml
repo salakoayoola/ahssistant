@@ -10,7 +10,7 @@ services:
       - VERSION=docker
       - PLEX_CLAIM= #optional
     volumes:
-      - ./plex:/config
+      - ./config:/config
       - ${TVSHOWS}:/tv #TV Shows
       - ${MOVIES}:/movies #Movies
     restart: unless-stopped

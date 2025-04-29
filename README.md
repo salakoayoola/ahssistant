@@ -25,6 +25,10 @@ Use the code you get to [Activate your Device](https://github.com/Taxel/PlexTrak
 ### Kometa
 
 ## Arrs
+I've chosen to create a network for my arr stack
+```docker
+docker network create arr-stack
+```
 ### Bazarr
 ### Sonarr
 ### Prowlarr

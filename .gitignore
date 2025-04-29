@@ -16,9 +16,13 @@ Thumbs.db
 
 # Extra Folders folder
 
-kometa/config/logs
-kometa/config/assets
-kometa/config/overlays
+# ARRs
+prowlarr/config/*
+radarr/config/*
+sonarr/config/*
+bazarr/config/*
+
+kometa/config/*
 
 
 plex/config/*
@@ -26,7 +30,7 @@ plextraktsync/config/*
 
 tautulli/config/*
 
-qbittorrent/
+qbittorrent/config/*
 
 tdarr/
 traefik/
