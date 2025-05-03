@@ -20,9 +20,9 @@ cloudflare-ddns/config/
 authentik/custom-templates/
 authentik/media/
 mysql/
-nginx/*
-nginx/data/
-nginx/letsencrypt/
+
+nginx/data/*
+
 gluetun/config
 
 bind9/cache
@@ -30,3 +30,15 @@ bind9/config/*
 bind9/records
 
 traefik/data/*
+traefik-main/data/*
+traefik-cloudflare/data/*
+
+portainer/config/*
+immich-demo/immich-db/*
+immich-demo/immich-library/*
+
+cloudflared/config/*
+
+firefox/config/*
+
+tailscale/config/*
