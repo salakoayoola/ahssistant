@@ -1,0 +1,106 @@
+# Updated Homepage Configuration with PNG Icons
+- Gigaplex Favs:
+    - Plex:
+        description: Watch movies and TV shows.
+        icon: plex.png
+        href: http://192.168.1.200:32400/web
+        widget:
+            type: tautulli
+            url: http://192.168.1.200:8181
+            key: 35abf7b9e1f847df9c0ad61fe9bde792
+            showEpisodeNumber: true
+    - Cloud Flared Docker:
+        widget:
+            type: cloudflared
+            accountid: 6808985eb36a92456ede3e5cb6ba5f02
+            tunnelid: 636ea402-0721-4e9d-9382-7b72957155cd
+            key: 6xfNKRWceoZ_-pka8VFhkrjuacXAMwQlaqIsdgEp
+            fields: ["status", "origin_ip"]
+    - Cloud Flared SystemD:
+        widget:
+            type: cloudflared
+            accountid: 6808985eb36a92456ede3e5cb6ba5f02
+            tunnelid: a6483f1b-8c31-4ddb-895f-fb33b35e07d4
+            key: 6xfNKRWceoZ_-pka8VFhkrjuacXAMwQlaqIsdgEp
+            fields: ["status", "origin_ip"]
+    - Cloud Flared Home Assistant:
+        widget:
+            type: cloudflared
+            accountid: 6808985eb36a92456ede3e5cb6ba5f02
+            tunnelid: 7cbf4e2f-114c-48cc-8fd8-966bc57de8a9
+            key: 6xfNKRWceoZ_-pka8VFhkrjuacXAMwQlaqIsdgEp
+            fields: ["status", "origin_ip"]
+    - Gluetun:
+        icon: gluetun.png
+        href: http://192.168.1.200:6881
+        description: Tunnels wink wink
+- Multimedia Ops:
+    - Radarr:
+        icon: radarr.png
+        href: http://192.168.1.200:7878
+        description: Movies Management
+        widget:
+            type: radarr
+            fields: ["wanted", "queued"]
+            url: http://192.168.1.200:7878
+            key: 6029cf0c87424e6a9565ccc95c0f6559
+    - Sonarr:
+        icon: sonarr.png
+        href: http://192.168.1.200:8989
+        description: TV Show Management
+        widget:
+            type: sonarr
+            fields: ["wanted", "queued"]
+            url: http://192.168.1.200:8989
+            key: 2cb936c8c8334bfba0a16c837e8aae54
+    - Prowlarr:
+        icon: prowlarr.png
+        href: http://192.168.1.200:9696
+        description: Indexer Aggregator
+        widget:
+            type: prowlarr
+            url: http://192.168.1.200:9696
+            fields: ["numberOfGrabs", "numberOfQueries", "numberOfFailGrabs", "numberOfFailQueries"]
+            key: 75b9838311a14911802328872ebbcc8a
+    - Bazarr:
+        icon: bazarr.png
+        href: http://192.168.1.200:6767
+        description: Subtitle Management
+    - Tautulli:
+        icon: tautulli.png
+        href: http://192.168.1.200:8181
+        description: Plex history manager
+- Server Ops:
+    - HomeAssistant:
+        icon: home-assistant.png
+        href: http://ahssistant.local:8123
+        description: Smart Home Management
+    - File Browser:
+        icon: filebrowser.png
+        href: http://192.168.1.200:3670
+        description: File Management and Sharing
+    - Immich:
+        href: http://192.168.1.200:2283
+        icon: immich.png
+        description: Personal Photo Storage
+    - Next Cloud:
+        href: http://192.168.1.200:8080
+        icon: nextcloud.png
+        description: Cloud Storage and Collaboration
+    - OpenMediaVault:
+        icon: openmediavault.png
+        href: http://192.168.1.200:89
+        description: Network Attached Storage Management
+    - QBitttorrent:
+        href: http://192.168.1.200:8081
+        icon: qbittorrent.png
+        description: Efficient Torrent Management
+        widget:
+            type: qbittorrent
+            url: http://192.168.1.200:8081
+            username: ayoola
+            password: gigaloluwa
+    - Portainer:
+        href: https://192.168.1.200:9443
+        icon: portainer.png
+        description: Docker Container Management

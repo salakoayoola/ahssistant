@@ -1,0 +1,19 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/service-widgets
+
+- resources:
+    cpu: true
+    memory: true
+    label: Storage
+    #disk:
+    #    - /personal-data
+    #    - /gigaplex
+    cputemp: true
+    uptime: true
+    units: metric
+    diskUnits: bytes
+
+- search:
+    provider: google
+    target: _blank

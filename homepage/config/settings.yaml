@@ -1,0 +1,34 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: Gigaplex
+
+background:
+  image: https://unsplash.com/photos/a-planetary-object-in-the-middle-of-the-night-EEx2k0nAfU4
+  blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+  saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  opacity: 50 # 0-100  
+
+cardBlur: sm # sm, "", md, etc... see https://tailwindcss.com/docs/backdrop-blur
+
+headerStyle: boxed
+
+providers:
+  weatherapi:
+    latitude: 6.513008582242786
+    longitude: 3.3838561177253728
+    provider: weatherapi
+
+layout:
+  Media:
+    style: row
+    columns: 4
+    
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+  provider: google # google, duckduckgo, bing, baidu, brave or custom
