@@ -1,0 +1,53 @@
+- platform: min_max
+  name: "House Average Temperature"
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.living_room_sensor_temperature
+    - sensor.office_sensor_temperature
+    - sensor.master_bedroom_temperature
+    - sensor.master_bedroom_temperature
+    - sensor.gigaplex_nas_temp
+
+- platform: template
+  sensors:
+    waste_collection_refuse:
+      friendly_name: "Refuse Collection"
+      value_template: >
+        {% set pickup = state_attr('calendar.waste_collection', 'start_time') %}
+        {% if pickup %}
+          {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+        {% else %}
+          unknown
+        {% endif %}
+      unit_of_measurement: "days"
+    waste_collection_recycling:
+      friendly_name: "Recycling Collection"
+      value_template: >
+        {% set pickup = state_attr('calendar.waste_collection_2', 'start_time') %}
+        {% if pickup %}
+          {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+        {% else %}
+          unknown
+        {% endif %}
+      unit_of_measurement: "days"
+    waste_collection_garden:
+      friendly_name: "Garden Waste Collection"
+      value_template: >
+        {% set pickup = state_attr('calendar.waste_collection_3', 'start_time') %}
+        {% if pickup %}
+          {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+        {% else %}
+          unknown
+        {% endif %}
+      unit_of_measurement: "days"
+    waste_collection_food:
+      friendly_name: "Food Waste Collection"
+      value_template: >
+        {% set pickup = state_attr('calendar.waste_collection_4', 'start_time') %}
+        {% if pickup %}
+          {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+        {% else %}
+          unknown
+        {% endif %}
+      unit_of_measurement: "days"

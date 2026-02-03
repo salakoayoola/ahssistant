@@ -1,0 +1,147 @@
+title: Desktop
+type: sections
+views:
+  - path: default_view
+    title: Home
+    badges:
+      - entity: binary_sensor.main_door
+      - type: entity
+        show_name: false
+        show_state: true
+        show_icon: true
+        entity: binary_sensor.living_room_door
+      - entity: weather.tomorrow_io_home_daily
+    sections:
+      - cards:
+          - type: heading
+            heading: Quick Access
+          - type: markdown
+            content: >
+              # Good {% set hour = now().hour %}{% if hour < 12 %}Morning{% elif
+              hour < 18 %}Afternoon{% else %}Evening{% endif %}, Ayoola
+
+              It is {{ state_attr('weather.tomorrow_io_home_daily',
+              'temperature') }}°C and  {{
+              states('weather.tomorrow_io_home_daily') | title  }}
+            title: Greeting
+          - type: tile
+            entity: input_select.current_room
+            name: Select Room
+          - type: tile
+            entity: switch.gigaplex_switch
+            name: Master Switch
+      - cards:
+          - type: heading
+            heading: Active Room
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Office
+            card:
+              type: tile
+              entity: light.office_light
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Office
+            card:
+              type: tile
+              entity: switch.office_desk
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Office
+            card:
+              type: tile
+              entity: switch.3d_printer
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Master Bedroom
+            card:
+              type: tile
+              entity: light.master_bedroom_light
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Master Bedroom
+            card:
+              type: sensor
+              entity: sensor.master_bedroom_temperature
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Kitchen
+            card:
+              type: tile
+              entity: switch.fridge_freezer_switch
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Kitchen
+            card:
+              type: sensor
+              entity: sensor.kitchen_temp_temperature
+          - type: conditional
+            conditions:
+              - entity: input_select.current_room
+                state: Living Room
+            card:
+              type: tile
+              entity: light.living_room_centre_light
+          - type: custom:mushroom-light-card
+            entity: light.office_light
+            name: Office Light
+            use_light_color: true
+            show_brightness_control: true
+            show_color_temp_control: false
+            show_color_control: false
+            collapsible_controls: true
+            tap_action:
+              action: more-info
+            layout: horizontal
+            grid_options:
+              columns: 12
+              rows: 1
+      - cards:
+          - type: heading
+            heading: Global Control
+          - type: tile
+            entity: group.all_indoor_lights
+            name: All Lights
+          - type: tile
+            entity: group.all_doors
+            name: All Doors
+      - cards:
+          - type: heading
+            heading: Waste Collection
+          - event_grouping: true
+            drop_todayevents_from: '10:00:00'
+            next_days: 2
+            pattern:
+              - icon: mdi:flower
+                color: lime
+                type: organic
+              - icon: mdi:newspaper
+                color: blue
+                type: paper
+              - icon: mdi:recycle-variant
+                color: amber
+                type: recycle
+              - icon: mdi:trash-can-outline
+                color: grey
+                type: waste
+              - icon: mdi:dump-truck
+                color: purple
+                type: others
+            alignment_style: left
+            items_per_row: 1
+            refresh_rate: 60
+            with_label: true
+            type: custom:trash-card
+            entities:
+              - calendar.waste_collection
+              - calendar.waste_collection_4
+              - calendar.waste_collection_2
+              - calendar.waste_collection_3
+            hide_time_range: true
