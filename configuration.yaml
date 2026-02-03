@@ -1,0 +1,106 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include sensors.yaml
+
+group: !include groups.yaml
+
+# Lovelace Dashboards
+lovelace:
+  dashboards:
+    floorplan-dashboard:
+      mode: yaml
+      title: Floorplans
+      icon: mdi:creation
+      filename: floorplan-dashboard.yaml
+      show_in_sidebar: false
+    situation-room:
+      mode: yaml
+      title: Situation Room
+      icon: mdi:creation
+      filename: situation-room.yaml
+      show_in_sidebar: false
+
+input_select: !include input_select.yaml
+
+template:
+  - sensor:
+      - name: "Refuse Collection"
+        unique_id: waste_collection_refuse
+        unit_of_measurement: "days"
+        state: >
+          {% set pickup = state_attr('calendar.waste_collection', 'start_time') %}
+          {% if pickup %}
+            {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+          {% else %}
+            unknown
+          {% endif %}
+
+      - name: "Recycling Collection"
+        unique_id: waste_collection_recycling
+        unit_of_measurement: "days"
+        state: >
+          {% set pickup = state_attr('calendar.waste_collection_2', 'start_time') %}
+          {% if pickup %}
+            {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+          {% else %}
+            unknown
+          {% endif %}
+
+      - name: "Garden Waste Collection"
+        unique_id: waste_collection_garden
+        unit_of_measurement: "days"
+        state: >
+          {% set pickup = state_attr('calendar.waste_collection_3', 'start_time') %}
+          {% if pickup %}
+            {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+          {% else %}
+            unknown
+          {% endif %}
+
+      - name: "Food Waste Collection"
+        unique_id: waste_collection_food
+        unit_of_measurement: "days"
+        state: >
+          {% set pickup = state_attr('calendar.waste_collection_4', 'start_time') %}
+          {% if pickup %}
+            {{ ((as_timestamp(pickup) - as_timestamp(now())) / 86400) | int + 1 }}
+          {% else %}
+            unknown
+          {% endif %}
+
+      - name: "Office Desk Power"
+        unique_id: office_desk_power
+        unit_of_measurement: "W"
+        device_class: power
+        state: "{{ state_attr('switch.office_desk', 'current_consumption') }}"
+
+      - name: "3D Printer Power"
+        unique_id: printer_3d_power
+        unit_of_measurement: "W"
+        device_class: power
+        state: "{{ state_attr('switch.3d_printer', 'current_consumption') }}"
+
+      - name: "Fridge Switch Power"
+        unique_id: fridge_switch_power
+        unit_of_measurement: "W"
+        device_class: power
+        state: "{{ state_attr('switch.fridge_freezer_switch', 'current_consumption') }}"
+
+      - name: "Washing Machine Switch Power"
+        unique_id: washing_machine_switch_power
+        unit_of_measurement: "W"
+        device_class: power
+        state: "{{ state_attr('switch.washing_machine_switch', 'current_consumption') }}"
